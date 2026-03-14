@@ -1,61 +1,100 @@
+// Lấy session user từ localStorage
 const userSession = JSON.parse(localStorage.getItem("user_session"));
 
+// timer dùng để tự đóng dropdown
 let autoCloseTimer = null;
+
+// kiểm tra chuột có đang hover vào dropdown hay không
 let isHoveringDropdown = false;
 
+
+// ==============================
+// HÀM MỞ / ĐÓNG DROPDOWN
+// ==============================
 function dropDown(btn) {
 
+    // tìm phần tử cha gần nhất có class .content-in
     const container = btn.closest(".content-in");
-    if (!container) return;
+    if (!container) return; // nếu không tìm thấy thì dừng
 
+    // tìm dropdown bên trong container
     const dropdown = container.querySelector(".size-inside");
-    if (!dropdown) return;
+    if (!dropdown) return; // nếu không có dropdown thì dừng
 
-    // đóng dropdown khác
+    // ==============================
+    // ĐÓNG NHỮNG DROPDOWN KHÁC
+    // ==============================
     document.querySelectorAll(".content-in.active").forEach(el => {
         if (el !== container) {
-            el.classList.remove("active");
+            el.classList.remove("active"); // remove active để đóng dropdown khác
         }
     });
 
+    // kiểm tra dropdown hiện tại có đang đóng không
     const isOpening = !container.classList.contains("active");
 
+    // bật / tắt dropdown
     container.classList.toggle("active");
 
+    // nếu đang mở dropdown thì bật auto close
     if (isOpening) {
         setupAutoClose(container, dropdown);
     } else {
+        // nếu đóng thì xóa timer
         clearTimeout(autoCloseTimer);
     }
 }
 
+
+// ==============================
+// HÀM TỰ ĐÓNG DROPDOWN
+// ==============================
 function setupAutoClose(container, dropdown) {
 
+    // xóa timer cũ
     clearTimeout(autoCloseTimer);
+
+    // mặc định chưa hover
     isHoveringDropdown = false;
 
+    // sau 1.5s nếu không hover thì đóng dropdown
     autoCloseTimer = setTimeout(() => {
         if (!isHoveringDropdown) {
             container.classList.remove("active");
         }
     }, 1500);
 
+    // ==============================
+    // KHI CHUỘT VÀO DROPDOWN
+    // ==============================
     dropdown.onmouseenter = () => {
-        isHoveringDropdown = true;
-        clearTimeout(autoCloseTimer);
+        isHoveringDropdown = true; // đánh dấu đang hover
+        clearTimeout(autoCloseTimer); // hủy auto close
     };
 
+    // ==============================
+    // KHI CHUỘT RỜI DROPDOWN
+    // ==============================
     dropdown.onmouseleave = () => {
         isHoveringDropdown = false;
+
+        // sau 1.5s sẽ đóng dropdown
         autoCloseTimer = setTimeout(() => {
             container.classList.remove("active");
         }, 1500);
     };
 }
 
+
+// ==============================
+// CLICK NGOÀI DROPDOWN → ĐÓNG
+// ==============================
 document.addEventListener("click", function (e) {
 
+    // nếu click không nằm trong .content-in
     if (!e.target.closest(".content-in")) {
+
+        // đóng tất cả dropdown đang mở
         document.querySelectorAll(".content-in.active")
             .forEach(el => el.classList.remove("active"));
     }

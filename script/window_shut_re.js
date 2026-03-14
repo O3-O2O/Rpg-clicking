@@ -34,8 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
 
-            localStorage.removeItem("openedGameIcon");
-            localStorage.removeItem("openedGamePage");
+            
 
             if (mode === "Shutdown") {
                 window.close();
@@ -44,6 +43,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 setTimeout(() => {
 
                     window.location.href = "window_waiting.html";
+                    localStorage.removeItem("openedGameIcon");
+                    localStorage.removeItem("openedGamePage");
+                    localStorage.removeItem("myPCOpen");
+                    localStorage.removeItem("myBombOpen");
+                    localStorage.removeItem("desktopBackground")
 
                 },1000)
             }
@@ -53,3 +57,4 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 5000);
 
 });
+

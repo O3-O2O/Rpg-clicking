@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
             })
             .then(() => {
-                alert("Successfully log in");
+                alert("Successfully sign in");
                 window.location.href = "menu.html";
             })
             .catch((error) => {
